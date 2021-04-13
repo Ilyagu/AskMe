@@ -75,26 +75,32 @@
                         Ilyagu
                     </div>
                 </div>
-
-                <form>
+                <form class="need-validation" novalidate>
+                    <div class="d-flex w-100 invalid-feedback valid_settings">
+                        Please enter login.
+                    </div>
                     <div class="d-flex ms-5 ps-5 mb-3 w-50">
                         <label for="inputLogin" class="col-sm-5 col-form-label col-form-label-lg">Login</label>
                         <div class="d-flex w-100">
-                            <input type="text" class="form-control" placeholder="Login" id="inputLogin">
+                            <input type="text" class="form-control" placeholder="Login" id="inputLogin" required>
                         </div>
+                    </div>
+                    <div class="d-flex w-100 invalid-feedback valid_settings">
+                        Please enter Email.
                     </div>
                     <div class="d-flex ms-5 ps-5 mb-3 w-50">
                         <label for="inputEmail" class="col-sm-5 col-form-label col-form-label-lg">Email</label>
                         <div class="d-flex w-100">
-                            <input type="email" class="form-control" placeholder="email" id="inputEmail">
+                            <input type="email" class="form-control" placeholder="email" id="inputEmail" required>
                         </div>
                     </div>
                     <div class="d-flex ms-5 p-sm-2 mb-3 w-50">
-                        <label for="inputAvatar" class="col-sm-2 col-form-label col-form-label-lg" style="margin-right: 130px;">Avatar</label>
+                        <label for="inputAvatar" class="col-sm-2 col-form-label col-form-label-lg"
+                               style="margin-right: 130px;">Avatar</label>
                         <div class="d-flex flex-column w-100" style="margin-top: 20px">
-                            <img class="question-img" src="../static/img/star.jpeg">
+                            <img class="question-img" src="../static/img/star.jpeg" style="max-width: 250px;">
                             <div class="d-flex mt-2">
-                                <input type="file" class="form-control" placeholder="python" id="inputAvatar">
+                                <input type="file" class="form-control" placeholder="python" id="inputAvatar" required>
                             </div>
                         </div>
                     </div>

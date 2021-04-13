@@ -108,7 +108,7 @@ code {
 }
 
 .question-img {
-    max-width: 250px;
+    max-width: 120px;
     border: solid orange;
     border-radius: 10px;
 }
@@ -162,6 +162,7 @@ code {
 .btns-pages {
     position: relative;
     left: 40%;
+    padding-bottom: 20px;
 }
 
 .btn-page {
@@ -435,4 +436,12 @@ main > .container-fluid {
 
 body > .h-100 {
     padding-top: 100px;
+}
+
+.valid_settings {
+    margin-left: 230px;
+}
+
+.valid_register {
+    margin-left: 260px;
 }
