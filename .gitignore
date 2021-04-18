@@ -1,4 +1,6 @@
 .idea/
+venv/
+*.pyc
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
