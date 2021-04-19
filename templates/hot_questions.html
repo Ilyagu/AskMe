@@ -7,7 +7,10 @@
 
 {% block headline %}
     <div class="new-questions">
-        Tag: {{ tag.name }}
+        Hot Questions
+    </div>
+    <div class="hot-questions">
+        <a href="{% url 'index' %}">New Questions</a>
     </div>
 {% endblock headline %}
 

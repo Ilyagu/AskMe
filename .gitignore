@@ -1,6 +1,8 @@
 .idea/
 venv/
 *.pyc
+__pycache__/
+db.sqlite3
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
