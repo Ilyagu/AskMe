@@ -172,6 +172,7 @@ code {
 
 .current-question-author-info {
     max-width: 14%;
+    margin-left: 30px;
 }
 
 .current-question-img {
