@@ -8,8 +8,8 @@
                 <div class="row question-upvotes-downvotes">
                     <div class="btn-group">
                         <button class="btn btn-xs btn-upvote">+</button>
+                        <div class="like-counter">{{ question.rating }}</div>
                         <button class="btn btn-xs btn-downvote">-</button>
-                        <div class="like-counter">{{ question.likes }}</div>
                     </div>
                 </div>
             </div>
@@ -18,20 +18,15 @@
                     <a href="{% url 'answers_for_question' pk=question.id %}">{{ question.title }}</a>
                 </div>
                 <div class="question-text">
-                    Hello everyone my name is Nagdimaev Ilyagu and I am fucking retard.
-                    I have a lot of friends, for example, Michail Popov from whom I fucking stole this bullshit
-                    layout.
-                    So this theft didn't help me anyway, so I had to sort out this shit myself. I fucked in the
-                    mouth this frontend.
-                    It's just fucked up. Frontenders are just crazy motherfuckers.
+                    {{ question.text }}
                 </div>
                 <div class="row question-answers">
                     <label class="btn btn-link btn-tag">
-                        <a href="{% url 'answers_for_question' pk=question.id %}">Answers({{ question.number_of_answers }})
+                        <a href="{% url 'answers_for_question' pk=question.id %}">Answers({{ question.answers_number }})
                         </a>
                     </label>
                     <label class="question-tags">Tags:</label>
-                    {% for tag in question.tags_name %}
+                    {% for tag in question.tags.all %}
                         <label class="btn btn-link btn-tag question-tag"><a
                                 href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a></label>
                     {% endfor %}

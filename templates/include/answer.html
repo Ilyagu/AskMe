@@ -9,21 +9,21 @@
                     <div class="btn-group">
                         <button class="btn btn-xs btn-upvote">+</button>
                         <button class="btn btn-xs btn-downvote">-</button>
-                        <div class="like-counter">{{ answer.likes }}</div>
+                        <div class="like-counter">{{ answer.rating }}</div>
                     </div>
                 </div>
             </div>
             <div class="col-11">
-                <label class="btn btn-link question-title">Answer this</label>
+                <label class="btn btn-link question-title">{{ answer.author }}</label>
                 <div class="question-text">
                     {{ answer.text }}
                 </div>
                 <div class="row question-answers">
-                    <label class="btn btn-link btn-tag">Answers(3)</label>
                     <label class="question-tags">Tags:</label>
-                    <label class="btn btn-link btn-tag question-tag">Perl</label>
-                    <label class="btn btn-link btn-tag question-tag">SQL</label>
-                    <label class="btn btn-link btn-tag question-tag">Django</label>
+                    {% for tag in answer.tags.all %}
+                        <label class="btn btn-link btn-tag question-tag"><a
+                                href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a></label>
+                    {% endfor %}
                     <div class="checkbox">
                         <input type="checkbox" class="current-question-answer-checkbox">
                     </div>

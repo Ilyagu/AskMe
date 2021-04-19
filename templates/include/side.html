@@ -14,18 +14,18 @@
         {#        </div>#}
         <div class="col-12">
             {% for tag in popular_tags %}
-                {% if tag.popularity > 25 %}
+                {% if tag.rating > 40 %}
                     <a class="btn btn-link btn-tag" style="color: purple; font-size: 1.6rem;"
-                       href="{% url 'questions_by_tag' name=tag.name %}">{{ tag.name }}</a>
-                {% elif tag.popularity > 20 %}
+                       href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a>
+                {% elif tag.rating > 25 %}
                     <a class="btn btn-link btn-tag" style="color: #28a745; font-size: 1.4rem;"
-                       href="{% url 'questions_by_tag' name=tag.name %}">{{ tag.name }}</a>
-                {% elif tag.popularity > 15 %}
+                       href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a>
+                {% elif tag.rating > 10 %}
                     <a class="btn btn-link btn-tag" style="font-size: 1.3rem; color: #004085"
-                       href="{% url 'questions_by_tag' name=tag.name %}">{{ tag.name }}</a>
-                {% elif tag.popularity > 5 %}
+                       href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a>
+                {% else %}
                     <a class="btn btn-link btn-tag" style="color: darkgreen; font-size: 1.2rem;"
-                       href="{% url 'questions_by_tag' name=tag.name %}">{{ tag.name }}</a>
+                       href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a>
                 {% endif %}
             {% endfor %}
         </div>
@@ -33,21 +33,11 @@
             <div class="col-12">
                 <h2>Best Members</h2>
                 <div class="col-12">
-                    <div class="mb-2">
-                        <a href="#"><h5>Fedor</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Oleg</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Michail</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Sergey</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Ilyagu</h5></a>
-                    </div>
+                    {% for member in best_members %}
+                        <div class="mb-2">
+                            <a href="#">{{ member }}</a>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
