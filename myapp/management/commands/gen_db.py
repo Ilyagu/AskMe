@@ -16,7 +16,7 @@ class Command(BaseCommand):
         parser.add_argument("--answers", nargs="+", type=int)
         parser.add_argument("--tags", nargs="+", type=int)
         parser.add_argument("--likes", nargs="+", type=int)
-        parser.add_argument("--lol", nargs="+", type=int)
+        parser.add_argument("--ulikes", nargs="+", type=int)
 
         parser.add_argument("--db_size", nargs="+", type=str)
 
@@ -25,6 +25,7 @@ class Command(BaseCommand):
         parser.add_argument("--dtags", nargs="+", type=int)
         parser.add_argument("--danswers", nargs="+", type=int)
         parser.add_argument("--dquestions", nargs="+", type=int)
+        parser.add_argument("--dall", nargs="+", type=int)
 
     def handle(self, *args, **options):
         if options["users"]:
@@ -40,8 +41,8 @@ class Command(BaseCommand):
             self.fill_answers(options["answers"][0])
 
         if options["likes"]:
-            self.fill_likes_questions(options["likes"][0])
-            self.fill_likes_answers(2 * options["likes"][0])
+            self.fill_likes_questions(1000000)
+            self.fill_likes_answers(2000000)
 
         if options["dusers"]:
             self.delete_users()
@@ -58,8 +59,11 @@ class Command(BaseCommand):
         if options["dquestions"]:
             self.delete_questions()
 
-        if options["lol"]:
+        if options["ulikes"]:
             self.update_likes()
+
+        if options["dall"]:
+            self.delete_all()
 
         self.stdout.write(self.style.SUCCESS("Successfully closed poll "))
 
@@ -79,7 +83,7 @@ class Command(BaseCommand):
         for i in range(cnt):
             tag = f.word()
             while Tag.objects.filter(name=tag).exists():
-                tag = f.word()
+                tag = f.word() + f.word()
             Tag.objects.create(
                 name=tag,
             )
@@ -88,12 +92,13 @@ class Command(BaseCommand):
     def fill_questions(cnt):
         tag_ids = list(Tag.objects.values_list("id", flat=True))
         for profile in Profile.objects.all():
-            q = Question.objects.create(
-                author=profile,
-                title=f.sentence(),
-                text=f.text(),
-            )
-            q.tags.set(Tag.objects.filter(id__in=sample(tag_ids, k=randint(1, 3)))),
+            for i in range(10):
+                q = Question.objects.create(
+                    author=profile,
+                    title=f.sentence(),
+                    text=f.text(),
+                )
+                q.tags.set(Tag.objects.filter(id__in=sample(tag_ids, k=randint(1, 3)))),
 
     @staticmethod
     def fill_answers(cnt):
@@ -113,7 +118,7 @@ class Command(BaseCommand):
         profile_ids = list(Profile.objects.values_list("id", flat=True))
         count = 0
         for cur_question in Question.objects.all():
-            for profile in Profile.objects.filter(id__in=sample(profile_ids, k=randint(0, 10))):
+            for profile in Profile.objects.filter(id__in=sample(profile_ids, k=randint(0, 20))):
                 LikeQuestion.objects.create(
                     question=cur_question,
                     user=profile,
@@ -129,7 +134,7 @@ class Command(BaseCommand):
         profile_ids = list(Profile.objects.values_list("id", flat=True))
         count = 0
         for cur_answer in Answer.objects.all():
-            for profile in Profile.objects.filter(id__in=sample(profile_ids, k=randint(0, 10))):
+            for profile in Profile.objects.filter(id__in=sample(profile_ids, k=randint(0, 20))):
                 LikeAnswer.objects.create(
                     answer=cur_answer,
                     user=profile,
@@ -163,8 +168,19 @@ class Command(BaseCommand):
         Question.objects.all().delete()
 
     @staticmethod
+    def delete_all():
+        Profile.objects.all().delete()
+        User.objects.all().delete()
+        Question.objects.all().delete()
+        Answer.objects.all().delete()
+        Tag.objects.all().delete()
+        LikeQuestion.objects.all().delete()
+        LikeAnswer.objects.all().delete()
+
+    @staticmethod
     def update_likes():
         questions = list(Question.objects.values_list("id", flat=True))
         for q in questions:
-            answers_of_question = Answer.objects.filter(question_id=q).order_by("-rating")
-
+            answers_of_question = list(Answer.objects.filter(question_id=q).order_by("-rating"))
+            question = Question.objects.get(pk=q)
+            question.answers_number = len(answers_of_question)

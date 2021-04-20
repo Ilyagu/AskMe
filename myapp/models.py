@@ -7,8 +7,6 @@ class Profile(models.Model):
     avatar = models.ImageField(max_length=1024, verbose_name="Аватар", null=True)
     rating = models.IntegerField(default=0, verbose_name="Рейтинг")
 
-    # objects = ProfileManager()
-
     def __str__(self):
         return self.user.get_username()
 
@@ -38,8 +36,6 @@ class Question(models.Model):
     rating = models.IntegerField(default=0, verbose_name="Рэйтинг")
     answers_number = models.IntegerField(default=0, verbose_name="Кол-во ответов")
 
-    # objects = QuestionManager()
-
     def __str__(self):
         return self.title
 
@@ -56,8 +52,6 @@ class Answer(models.Model):
     tags = models.ManyToManyField("Tag", verbose_name="Тэги", blank=True)
     is_correct = models.BooleanField(verbose_name="Правильность", null=True)
     rating = models.IntegerField(default=0, verbose_name="Рейтинг", null=True)
-
-    # objects = AnswerManager()
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -104,6 +98,7 @@ class LikeQuestion(models.Model):
         super(LikeQuestion, self).delete(*args, **kwargs)
 
     class Meta:
+        unique_together = ("user", "question")
         verbose_name = "Лайк на вопрос"
         verbose_name_plural = "Лайки на вопросы"
 
@@ -140,5 +135,6 @@ class LikeAnswer(models.Model):
         super(LikeAnswer, self).delete(*args, **kwargs)
 
     class Meta:
+        unique_together = ("user", "answer")
         verbose_name = "Лайк на ответ"
         verbose_name_plural = "Лайки на ответы"
