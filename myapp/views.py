@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from myapp.models import Profile, Question, Answer, Tag, LikeQuestion, LikeAnswer
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render
 import random
@@ -15,9 +15,9 @@ def paginate(objects_list, request, per_page=5):
 
 
 def index(request):
-    questions = paginate(Question.objects.new_questions(), request)
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+    questions = paginate(Question.objects.order_by("-date_joined"), request)
+    popular_tags = Tag.objects.order_by("-rating")[:15]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(
         request, "index.html", {"questions": questions, "popular_tags": popular_tags, "best_members": best_members}
@@ -25,9 +25,9 @@ def index(request):
 
 
 def hot_questions(request):
-    questions = paginate(Question.objects.hot_questions(), request)
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+    questions = paginate(Question.objects.order_by("-rating"), request)
+    popular_tags = Tag.objects.order_by("-rating")[:15]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(
         request,
@@ -39,9 +39,9 @@ def hot_questions(request):
 def tag(request, name):
     try:
         tag = Tag.objects.get(name=name)
-        questions = paginate(Question.objects.by_tag(name), request)
-        popular_tags = Tag.objects.popular_tags()
-        best_members = Profile.objects.best_members()
+        questions = paginate(Question.objects.filter(tags__name=tag).order_by("-rating"), request)
+        popular_tags = Tag.objects.order_by("-rating")[:15]
+        best_members = Profile.objects.order_by("-rating")[:10]
 
         return render(
             request,
@@ -55,9 +55,9 @@ def tag(request, name):
 def answers_for_question(request, pk):
     try:
         question = Question.objects.get(pk=pk)
-        question_answers = paginate(Answer.objects.by_question(pk), request, 3)
-        popular_tags = Tag.objects.popular_tags()
-        best_members = Profile.objects.best_members()
+        question_answers = paginate(Answer.objects.filter(question_id=pk).order_by("-rating"), request, 3)
+        popular_tags = Tag.objects.order_by("-rating")[:10]
+        best_members = Profile.objects.order_by("-rating")[:10]
 
         return render(
             request,
@@ -74,28 +74,28 @@ def answers_for_question(request, pk):
 
 
 def login(request):
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+    popular_tags = Tag.objects.order_by("-rating")[:10]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(request, "login.html", {"popular_tags": popular_tags, "best_members": best_members})
 
 
 def signup(request):
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+    popular_tags = Tag.objects.order_by("-rating")[:10]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(request, "signup.html", {"popular_tags": popular_tags, "best_members": best_members})
 
 
-def ask(request):
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+def new_question(request):
+    popular_tags = Tag.objects.order_by("-rating")[:10]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(request, "new_question.html", {"popular_tags": popular_tags, "best_members": best_members})
 
 
 def settings(request):
-    popular_tags = Tag.objects.popular_tags()
-    best_members = Profile.objects.best_members()
+    popular_tags = Tag.objects.order_by("-rating")[:10]
+    best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(request, "settings.html", {"popular_tags": popular_tags, "best_members": best_members})

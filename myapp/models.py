@@ -2,17 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class ProfileManager(models.Manager):
-    def best_members(self):
-        return self.order_by("-rating")[:10]
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="id пользователя")
     avatar = models.ImageField(max_length=1024, verbose_name="Аватар", null=True)
     rating = models.IntegerField(default=0, verbose_name="Рейтинг")
 
-    objects = ProfileManager()
+    # objects = ProfileManager()
 
     def __str__(self):
         return self.user.get_username()
@@ -22,23 +17,9 @@ class Profile(models.Model):
         verbose_name_plural = "Профили"
 
 
-class TagManager(models.Manager):
-    def add_tags_to_question(self, added_tags):
-        tags = self.filter(tag__in=added_tags)
-        for tag in tags:
-            tag.rating += 1
-            tag.save()
-        return tags
-
-    def popular_tags(self):
-        return self.order_by("-rating")[:15]
-
-
 class Tag(models.Model):
     name = models.CharField(max_length=64, verbose_name="Название")
     rating = models.IntegerField(default=0, verbose_name="Рейтинг")
-
-    objects = TagManager()
 
     def __str__(self):
         return self.name
@@ -46,17 +27,6 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "Тэг"
         verbose_name_plural = "Тэги"
-
-
-class QuestionManager(models.Manager):
-    def new_questions(self):
-        return self.order_by("-date_joined")
-
-    def hot_questions(self):
-        return self.order_by("-rating")
-
-    def by_tag(self, tag):
-        return self.filter(tags__name=tag).order_by("-rating")
 
 
 class Question(models.Model):
@@ -68,7 +38,7 @@ class Question(models.Model):
     rating = models.IntegerField(default=0, verbose_name="Рэйтинг")
     answers_number = models.IntegerField(default=0, verbose_name="Кол-во ответов")
 
-    objects = QuestionManager()
+    # objects = QuestionManager()
 
     def __str__(self):
         return self.title
@@ -76,11 +46,6 @@ class Question(models.Model):
     class Meta:
         verbose_name = "Вопрос"
         verbose_name_plural = "Вопросы"
-
-
-class AnswerManager(models.Manager):
-    def by_question(self, pk):
-        return self.filter(question_id=pk).order_by("-rating")
 
 
 class Answer(models.Model):
@@ -92,7 +57,7 @@ class Answer(models.Model):
     is_correct = models.BooleanField(verbose_name="Правильность", null=True)
     rating = models.IntegerField(default=0, verbose_name="Рейтинг", null=True)
 
-    objects = AnswerManager()
+    # objects = AnswerManager()
 
     def save(self, *args, **kwargs):
         if not self.pk:

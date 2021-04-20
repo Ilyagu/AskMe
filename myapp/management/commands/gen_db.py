@@ -16,6 +16,7 @@ class Command(BaseCommand):
         parser.add_argument("--answers", nargs="+", type=int)
         parser.add_argument("--tags", nargs="+", type=int)
         parser.add_argument("--likes", nargs="+", type=int)
+        parser.add_argument("--lol", nargs="+", type=int)
 
         parser.add_argument("--db_size", nargs="+", type=str)
 
@@ -23,6 +24,7 @@ class Command(BaseCommand):
         parser.add_argument("--dlikes", nargs="+", type=int)
         parser.add_argument("--dtags", nargs="+", type=int)
         parser.add_argument("--danswers", nargs="+", type=int)
+        parser.add_argument("--dquestions", nargs="+", type=int)
 
     def handle(self, *args, **options):
         if options["users"]:
@@ -52,6 +54,12 @@ class Command(BaseCommand):
 
         if options["danswers"]:
             self.delete_answers()
+
+        if options["dquestions"]:
+            self.delete_questions()
+
+        if options["lol"]:
+            self.update_likes()
 
         self.stdout.write(self.style.SUCCESS("Successfully closed poll "))
 
@@ -149,3 +157,14 @@ class Command(BaseCommand):
     @staticmethod
     def delete_answers():
         Answer.objects.all().delete()
+
+    @staticmethod
+    def delete_questions():
+        Question.objects.all().delete()
+
+    @staticmethod
+    def update_likes():
+        questions = list(Question.objects.values_list("id", flat=True))
+        for q in questions:
+            answers_of_question = Answer.objects.filter(question_id=q).order_by("-rating")
+

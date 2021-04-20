@@ -26,6 +26,6 @@ urlpatterns = [
     path('question/<int:pk>/', views.answers_for_question, name='answers_for_question'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
-    path('ask/', views.ask, name='new_question'),
+    path('ask/', views.new_question, name='new_question'),
     path('settings/', views.settings, name='settings'),
 ]
