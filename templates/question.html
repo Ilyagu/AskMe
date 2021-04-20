@@ -1,5 +1,5 @@
 {% extends "include/base.html" %}
-{%  load static %}
+{% load static %}
 
 {% block side %}
     {% include 'include/side.html' %}
@@ -7,9 +7,9 @@
 
 {% block content %}
     {% include "include/question_for_ask.html" %}
-    {% for answer in answers %}
+    {% for answer in content %}
         {% include "include/answer.html" %}
     {% endfor %}
-    {% include "include/new_answer.html" %}
     {% include "include/pag.html" %}
+    {% include "include/new_answer.html" %}
 {% endblock content %}

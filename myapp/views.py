@@ -19,7 +19,7 @@ def index(request):
     best_members = Profile.objects.order_by("-rating")[:10]
 
     return render(
-        request, "index.html", {"questions": questions, "popular_tags": popular_tags, "best_members": best_members}
+        request, "index.html", {"content": questions, "popular_tags": popular_tags, "best_members": best_members}
     )
 
 
@@ -31,7 +31,7 @@ def hot_questions(request):
     return render(
         request,
         "hot_questions.html",
-        {"questions": questions, "popular_tags": popular_tags, "best_members": best_members},
+        {"content": questions, "popular_tags": popular_tags, "best_members": best_members},
     )
 
 
@@ -44,7 +44,7 @@ def tag(request, name):
     return render(
         request,
         "tag.html",
-        {"tag": tag, "questions": questions, "popular_tags": popular_tags, "best_members": best_members},
+        {"tag": tag, "content": questions, "popular_tags": popular_tags, "best_members": best_members},
     )
 
 
@@ -59,7 +59,7 @@ def answers_for_question(request, pk):
         "question.html",
         {
             "question": question,
-            "answers": question_answers,
+            "content": question_answers,
             "popular_tags": popular_tags,
             "best_members": best_members,
         },
