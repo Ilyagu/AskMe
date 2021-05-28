@@ -1,4 +1,4 @@
-{%  load static %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en" class="h-100">
@@ -10,10 +10,10 @@
 </head>
 
 <body class="d-flex flex-column h-100" style="padding-top: 100px;">
-    {% include "include/navbar.html" %}
+{% include "include/navbar.html" %}
 
-    {% block side %}
-    {% endblock side %}
+{% block side %}
+{% endblock side %}
 
 <main role="main" class="flex-shrink-0">
     {% block headline %}
@@ -25,7 +25,10 @@
     </div>
 </main>
 
-<script src="{% static " js/bootstrap.bundle.min.js" %}"></script>
-
+<script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="{% static "js/csrf.js" %}"></script>
+{% block jscode %}
+{% endblock %}
 </body>
 </html>

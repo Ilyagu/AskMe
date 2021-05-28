@@ -20,3 +20,8 @@
     {% endfor %}
     {% include "include/pag.html" %}
 {% endblock content %}
+
+{% block jscode %}
+    <script src="{% static "js/votes.js" %}"></script>
+    <script src="{% static "js/is_correct.js" %}"></script>
+{% endblock %}

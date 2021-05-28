@@ -4,13 +4,9 @@
     <div class="col-10">
         <div class="row question-box">
             <div class="col-1">
-                <img class="question-img" src="../../static/img/star.jpeg">
+                <img class="question-img" src="{{ question.author.avatar.url }}" width="120px">
                 <div class="row question-upvotes-downvotes">
-                    <div class="btn-group">
-                        <button class="btn btn-xs btn-upvote">+</button>
-                        <div class="like-counter">{{ question.rating }}</div>
-                        <button class="btn btn-xs btn-downvote">-</button>
-                    </div>
+                    {% include 'include/rating.html' with type='question' pk=question.pk rating=question.rating %}
                 </div>
             </div>
             <div class="col-11">

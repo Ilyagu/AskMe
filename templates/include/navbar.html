@@ -12,22 +12,31 @@
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        {#        <button class="btn btn-success btn-ask">Ask!</button>#}
-        <a href="{% url 'new_question' %}" class="btn btn-success btn-ask" tabindex="-1" role="button"
+        <a type="submit" href="{% url 'new_question' %}" class="btn btn-success btn-ask" tabindex="-1" role="button"
            aria-disabled="true">Ask!</a>
-        <!--        Если атворизирован-->
-        <a href="" class="navbar-user-name">Ilyagu</a>
-        <div class="d-flex flex-column">
-            <div class="p-3">
-                <a href="{% url 'settings' %}" class="navbar-settings" style="bottom: 40px;">Settings</a>
+        {% if request.user.is_authenticated %}
+            <a href="" class="navbar-user-name">{{ request.user.username }}</a>
+            <div class="d-flex flex-column">
+                <div class="p-3">
+                    <a href="{% url 'settings' %}" class="navbar-settings" style="bottom: 40px;">Settings</a>&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="p-3">
+                    <a href="{% url 'logout' %}" class="navbar-log-out" style="bottom: 10px;">Log-out</a>
+                </div>
             </div>
-            <div class="p-3">
-                <a href="" class="navbar-log-out" style="bottom: 10px;">Log-out</a>
-            </div>
-        </div>
-        <img class="rounded-circle navbar-img" src="../../static/img/star.jpeg">
-        {# Если не авторизирован #}
-{#        <a href="{% url 'login' %}" class="btn btn-secondary btn-sing-in" tabindex="-1" role="button" aria-disabled="true">Sign in</a>#}
-{#        <a href="{% url 'signup' %}" class="btn btn-primary btn-sing-up" tabindex="-1" role="button" aria-disabled="true">Sign in</a>#}
+            <img class="rounded-circle navbar-img" src="{{ request.user.profile.avatar.url }}">
+        {% else %}
+            {% if request.path == '/login/' or request.path == '/signup/' %}
+                <a href="{% url 'login' %}" class="btn btn-secondary btn-sing-in" tabindex="-1" role="button"
+                   aria-disabled="true">Sign in</a>&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-sing-up" tabindex="-1" role="button"
+                   aria-disabled="true">Sign up</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-secondary btn-sing-in" tabindex="-1" role="button"
+                   aria-disabled="true">Sign in</a>&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-sing-up" tabindex="-1" role="button"
+                   aria-disabled="true">Sign up</a>
+            {% endif %}
+        {% endif %}
     </nav>
 </header>

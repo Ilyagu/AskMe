@@ -4,12 +4,10 @@
     <div class="col-10">
         <div class="row question-box">
             <div class="col-1">
-                <img class="question-img" src={% static "img/star.jpeg" %}>
+                <img class="question-img" src="{{ question.author.avatar.url }}">
                 <div class="row question-upvotes-downvotes">
                     <div class="btn-group">
-                        <button class="btn btn-xs btn-upvote">+</button>
-                        <div class="like-counter">{{ answer.rating }}</div>
-                        <button class="btn btn-xs btn-downvote">-</button>
+                        {% include 'include/rating.html' with type='answer' pk=answer.pk rating=answer.rating %}
                     </div>
                 </div>
             </div>
@@ -18,15 +16,22 @@
                 <div class="question-text">
                     {{ answer.text }}
                 </div>
-                <div class="row question-answers">
-                    <label class="question-tags">Tags:</label>
-                    {% for tag in answer.tags.all %}
-                        <label class="btn btn-link btn-tag question-tag"><a
-                                href="{% url 'questions_by_tag' name=tag %}">{{ tag }}</a></label>
-                    {% endfor %}
-                    <div class="checkbox">
-                        <input type="checkbox" class="current-question-answer-checkbox">
-                    </div>
+                <div class="row question-answers is-valid">
+                    {% if question.author == request.user.profile %}
+                        <input class="js-correct checkbox current-question-answer-checkbox"" data-id="{{ answer.pk }}" type="checkbox" id="correct-{{ answer.pk }}"
+                                {% if answer.is_correct %} checked {% endif %}>
+                        <label class="checkbox current-question-answer-checkbox" for="correct-{{ answer.pk }}" {% if answer.is_correct %}
+                               style="color: #28a745;" {% endif %}>
+                            Correct!
+                        </label>
+                    {% else %}
+                        <input class="js-correct checkbox current-question-answer-checkbox" data-id="{{ answer.pk }}" type="checkbox"
+                               id="correct1-{{ answer.pk }}" {% if answer.is_correct %} checked {% endif %}  disabled>
+                        <label class="" for="correct-{{ answer.pk }}" {% if answer.is_correct %}
+                               style="color: #28a745;" {% endif %}>
+                            Correct!
+                        </label>
+                    {% endif %}
                 </div>
             </div>
         </div>

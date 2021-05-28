@@ -11,43 +11,8 @@
     <link href="../static/css/style.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100" style="padding-top: 100px">
-    {% include "include/navbar_not_auth.html" %}
-<div class="row popular-tags offset-sm-10">
-    <div class="col-10">
-        <h2>Popular tags</h2>
-        <div class="col-12">
-            <a href="tag.html" class="btn btn-link btn-tag" style="color: #28a745;">Perl</a>
-            <a href="tag.html" class="btn btn-link btn-tag" style="color: #721c24; font-size: 1.3rem;">Django</a>
-            <a href="tag.html" class="btn btn-link btn-tag" style="color: #002752">Moon Park</a>
-            <a href="tag.html" class="btn btn-link btn-tag" style="color: purple; font-size: 1.6rem;">HTML</a>
-            <a href="tag.html" class="btn btn-link btn-tag">CSS</a>
-            <a href="tag.html" class="btn btn-link btn-tag" style="font-size: 1.3rem; color: #004085">C++</a>
-            <a href="tag.html" class="btn btn-link btn-tag" style="font-size: 1.5rem; color: navy">Techno-park</a>
-        </div>
-        <div class="row" style="margin-top: 40px;">
-            <div class="col-12">
-                <h2>Best Members</h2>
-                <div class="col-12">
-                    <div class="mb-2">
-                        <a href="#"><h5>Fedor</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Oleg</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Michail</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Sergey</h5></a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="#"><h5>Ilyagu</h5></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "include/navbar.html" %}
+{% include "include/side.html" %}
 <main class="flex-shrink-0" style="margin-left: 400px">
     <div class="container-fluid" style="padding: 0px">
         <div class="row">
@@ -58,58 +23,29 @@
                     </div>
                 </div>
 
-                <form class="need-validation" novalidate>
-                    <div class="d-flex w-100 invalid-feedback valid_settings">
-                        Please enter Login.
-                    </div>
-                    <div class="d-flex ms-5 ps-5 mb-3 w-50">
-                        <label for="inputLogin" class="col-sm-5 col-form-label col-form-label-lg">Login</label>
-                        <div class="d-flex w-100">
-                            <input type="text" class="form-control" placeholder="Login" id="inputLogin" required>
+                <form method="post" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% for form_field in form %}
+                        <div class="d-flex w-100 invalid-feedback valid_settings">
+                            {{ form_field.errors }}
                         </div>
-                    </div>
-                    <div class="d-flex w-100 invalid-feedback valid_settings">
-                        Please enter Email.
-                    </div>
-                    <div class="d-flex ms-5 ps-5 mb-3 w-50">
-                        <label for="inputEmail" class="col-sm-5 col-form-label col-form-label-lg">Email</label>
-                        <div class="d-flex w-100">
-                            <input type="email" class="form-control" placeholder="email" id="inputEmail" required>
-                        </div>
-                    </div>
-                    <div class="d-flex w-100 invalid-feedback valid_settings">
-                        Please enter new password.
-                    </div>
-                    <div class="d-flex ms-5 ps-5 mb-3 w-50">
-                        <label for="inputEmail" class="col-sm-5 col-form-label col-form-label-lg">Password</label>
-                        <div class="d-flex w-100">
-                            <input type="password" class="form-control" placeholder="Passord" id="inputEmail" required>
-                        </div>
-                    </div>
-                    <div class="d-flex w-100 invalid-feedback valid_settings">
-                        Please confirm password.
-                    </div>
-                    <div class="d-flex ms-5 ps-5 mb-3 w-50">
-                        <label for="inputConfirmPassword" class="col-sm-5 col-form-label col-form-label-lg">Confirm
-                            Password</label>
-                        <div class="d-flex w-100">
-                            <input type="password" class="form-control" placeholder="Confirm Passord" id="inputConfirmPassword" required>
-                        </div>
-                    </div>
-                    <div class="d-flex ms-5 p-sm-2 mb-3 w-50">
-                        <label for="inputAvatar" class="col-sm-2 col-form-label col-form-label-lg"
-                               style="margin-right: 130px;">Avatar</label>
-                        <div class="d-flex flex-column w-100" style="margin-top: 20px">
-                            <img class="question-img" src="../static/img/unauthor.png" style="max-width: 100px;">
-                            <div class="d-flex mt-2">
-                                <input type="file" class="form-control" placeholder="python" id="inputAvatar">
+                        <div class="d-flex ms-5 ps-5 mb-3 w-50">
+                            <label for="inputLogin"
+                                   class="col-sm-5 col-form-label col-form-label-lg">{{ form_field.label }}</label>
+                            <div class="d-flex w-100">
+                                {{ form_field }}
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
+
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                    {% endif %}
                     <div class="d-flex mb-3 ms-5 ps-5 w-50 justify-content-start">
                         <label class="col-sm-5 col-form-label col-form-label-lg"></label>
                         <div class="d-flex">
-                            <button type="submit" class="btn btn-success btn-lg">Save</button>
+                            <button type="submit" class="btn btn-success btn-lg">Register</button>
                         </div>
                     </div>
                 </form>

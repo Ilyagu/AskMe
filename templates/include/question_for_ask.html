@@ -1,16 +1,14 @@
 {% load static %}
 
 <div class="row">
-    <div class="col-10" >
+    <div class="col-10">
         <div class="row">
             <div class="col-1 current-question-author-info" style="margin-left: 50px;">
                 <div class="current-question-author"><h3>{{ question.author }}</h3></div>
-                <img class="question-img" src={% static "img/star.jpeg" %}>
+                <img class="question-img" src="{{ question.author.avatar.url }}">
                 <div class="col-11 current-question-info">
                     <div class="btn-group">
-                        <button class="btn btn-xs btn-upvote">+</button>
-                        <div class="like-counter">{{ question.rating }}</div>
-                        <button class="btn btn-xs btn-downvote">-</button>
+                        {% include 'include/rating.html' with type='question' pk=question.pk rating=question.rating %}
                     </div>
                 </div>
             </div>

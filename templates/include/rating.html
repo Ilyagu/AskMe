@@ -1,0 +1,25 @@
+{% load static %}
+
+<form method="post">
+    {% if request.user.is_authenticated %}
+        <div class="btn-group" role="group">
+            <button class="js-votes btn btn-xs btn-upvote" type="button"
+                    data-type="{{ type }}" data-id="{{ pk }}" data-action="like">
+                +
+            </button>
+            <span class="like-counter" id="rating-{{ pk }}">{{ rating }}</span>
+            <button class="js-votes btn btn-xs btn-downvote" type="button"
+                    data-type="{{ type }}" data-id="{{ pk }}" data-action="dislike">
+                -
+            </button>
+        </div>
+    {% else %}
+        <div class="btn-group" role="group">
+            <button type="button" class="js-not-authorized btn btn-xs btn-upvote" data-type="{{ type }}"
+                    data-id="{{ pk }}" data-action="like"></button>
+            <span class="like-counter" id="">{{ rating }}</span>
+            <button type="button" class="js-not-authorized btn btn-xs btn-downvote" data-type="{{ type }}"
+                    data-id="{{ pk }}" data-action="dislike"></button>
+        </div>
+    {% endif %}
+</form>
